@@ -1,0 +1,12 @@
+{
+    "jscodehints.detectedExclusions": [
+        "/home/carl/Projects/AppDev/treadmillManager/gulpfile.js",
+        "/home/carl/Projects/AppDev/treadmillManager/platforms/android/assets/www/cordova.js",
+        "/home/carl/Projects/AppDev/treadmillManager/platforms/android/assets/www/cordova_plugins.js",
+        "/home/carl/Projects/AppDev/treadmillManager/platforms/android/assets/www/lib/ionic/js/ionic-angular.js",
+        "/home/carl/Projects/AppDev/treadmillManager/platforms/android/assets/www/lib/ionic/js/ionic.js",
+        "/home/carl/Projects/AppDev/treadmillManager/platforms/android/assets/www/lib/ionic/js/ionic-angular.min.js",
+        "/home/carl/Projects/AppDev/treadmillManager/platforms/android/assets/www/lib/ionic/js/ionic.min.js",
+        "/home/carl/Projects/AppDev/treadmillManager/platforms/android/assets/www/lib/ionic/js/ionic.bundle.min.js"
+    ]
+}
