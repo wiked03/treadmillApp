@@ -12,7 +12,13 @@ var app = angular.module('treadmillManager', ['ionic', 'controllers', 'services'
 			StatusBar.styleDefault();
 		}
         
-        dbFactory.initDB();
+        dbFactory.getProfile(function(data) {
+            if (!data) {
+                alert('yay not there');
+                dbFactory.initDB();
+            }
+        });
+        //dbFactory.initDB();
 
 	});
 });

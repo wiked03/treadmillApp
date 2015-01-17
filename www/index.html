@@ -11,6 +11,7 @@
 		<!-- IF using Sass (run gulp sass first), then uncomment below and remove the CSS includes above
 		<link href="css/ionic.app.css" rel="stylesheet">
 		-->
+        <script src="js/jquery-2.1.3.min.js"></script>
 
 		<!-- ionic/angularjs js -->
 		<script src="lib/ionic/js/ionic.bundle.js"></script>
@@ -19,7 +20,7 @@
         <script src="cordova.js"></script>
 
 		<!-- your app's js -->
-        <!-- <script src="js/jquery-1.11.2.min.js"></script> -->
+
         <script type="text/javascript" src="js/localforage.js"></script>
         <script type="text/javascript" src="js/angular-localForage.js"></script>
         <script type="text/javascript" src="js/openfb.js"></script>
@@ -114,176 +115,95 @@
 		</script>
         
         <script id='settings.html' type='text/ng-template'>
-			<ion-view title="Change your settings">
-				<ion-content class="content" ng-controller="SettingsCtrl">
-                    
+			<ion-view title="Settings"  ng-controller="SettingsCtrl">
+                <ion-nav-buttons side="right">
+                    <button class="button button-icon icon ion-edit" ng-click="enableEdit()"></button>
+                </ion-nav-buttons>
+				<ion-content class="content">
                     <button class="button button-block button-light" ui-sref="profile">
 						View Profile
 					</button>
-
-					<div class="list">
-                    
-                        <ul class="list">
-                          <li class="item item-input">
-                            <div class="input-label">
-                                Measurement Units
-                            </div>
-                            <label class="item item-input item-select">
-                                <select>
-                                    <option selected>US</option>
-                                    <option>Metric</option>
-                                </select>
-                            </label>
-                          </li>
-                          <li class="item item-toggle">
-                             Connect with Facebook
-                             <label class="toggle toggle-positive">
-                               <input type="checkbox" ng-click="fbToggle()">
-                               <div class="track">
-                                 <div class="handle"></div>
-                               </div>
-                             </label>
-                          </li>
-                          <li class="item item-toggle">
-                             Connect with My Fitness Pal                             
-                             <label class="toggle toggle-positive">
-                               <input type="checkbox">
-                               <div class="track">
-                                 <div class="handle"></div>
-                               </div>
-                             </label>
-                          </li>
-                        </ul>
-					</div>
-				</ion-content>
-			</ion-view>
-		</script>
-        
-        <script id="settingsModal.html" type="text/ng-template">
-            <div class="modal">
-                <ion-header-bar class="bar-calm">
-                    <h1 class="title">Edit Profile</h1>
-                </ion-header-bar>
-                <ion-content class="content">
-                    <label class="item item-input">
-                        <span class="input-label">Name</span>
-                        <input type="text" class="modal_text" ng-model="form.name">
-                    </label>
                     <label class="item item-input item-select">
-                        <span class="input-label">Sex</span>
-                        <select id="sexSelector" ng-model="form.sex">
-                            <option>Male</option>
-                            <option>Female</option>
+                        <span class="input-label">Unit of Measure</span>
+                        <select id="sexSelector" class="form_input" ng-model="data.unit" disabled>
+                            <option>US</option>
+                            <option>Metric</option>
                         </select>
                     </label>
-                    <label class="item item-input">
-                        <span class="input-label">Height</span>
-                        <input type="text" class="modal_text" ng-model="form.height">
+                    <label class="item-toggle toggle toggle-positive">
+                        <span class="input-label">Connect to Facebook</span>
+                        <input type="checkbox" class="form_input" ng-click="fbToggle()" disabled>
+                           <div class="track">
+                             <div class="handle"></div>
+                           </div>
                     </label>
-                    <label class="item item-input">
-                        <span class="input-label">Weight</span>
-                        <input type="text" class="modal_text" ng-model="form.weight">
+                    <label class="toggle toggle-positive">
+                        <span class="input-label">Connect to My Fitness Pal</span>
+                        <input type="checkbox" class="form_input" disabled>
+                           <div class="track">
+                             <div class="handle"></div>
+                           </div>
                     </label>
-                    <div class="row">
+                    <div class="row form_buttons">
                         <div class="col">
-                            <button class="button button-block button-stable" ng-click='closeModal()'>
+                            <button class="button button-block button-stable" ng-click='cancelEdit()'>
                               Cancel
                            </button>
                         </div>
                         <div class="col">
-                            <button class="button button-block button-balanced" ng-click='updateProfile()'>
+                            <button class="button button-block button-balanced" ng-click='editSettings()'>
                               Save
                             </button>
                         </div>
                     </div>
-                </ion-content>
-            </div>
-        </script>
+				</ion-content>
+			</ion-view>
+		</script>
         
+    
         <script id='profile.html' type='text/ng-template'>
-			<ion-view title="Profile Settings"  ng-controller="ProfileCtrl">
+			<ion-view title="Profile"  ng-controller="ProfileCtrl">
                 <ion-nav-buttons side="right">
-                    <button class="button button-icon icon ion-edit" ng-click="openModal()">
-                    </button>
+                    <button class="button button-icon icon ion-edit" ng-click="enableEdit()"></button>
                 </ion-nav-buttons>    
 				<ion-content class="content profile">
-                    <div class="row">
-                        <div class="col col-75 data_label">
-                            Name
-                        </div>
-                        <div class="col data_value">
-                            {{data.name}}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col col-75 data_label">
-                            Sex
-                        </div>
-                        <div class="col data_value">
-                            {{data.sex}}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col col-75 data_label">
-                            Height 
-                        </div>
-                        <div class="col data_value">
-                            {{data.height}}
-                        </div>
-                    </div>
-                    <div class="row">
-                        <div class="col col-75 data_label">
-                            Weight
-                        </div>
-                        <div class="col data_value">
-                            {{data.weight}}
-                        </div>
-                    </div>
-				</ion-content>
-			</ion-view>
-		</script>
-        
-        <script id="profileModal.html" type="text/ng-template">
-            <div class="modal">
-                <ion-header-bar class="bar-calm">
-                    <h1 class="title">Edit Profile</h1>
-                </ion-header-bar>
-                <ion-content class="content">
                     <label class="item item-input">
                         <span class="input-label">Name</span>
-                        <input type="text" class="modal_text" ng-model="form.name">
+                        <input type="text" class="form_input" ng-model="data.name" disabled>
                     </label>
                     <label class="item item-input item-select">
                         <span class="input-label">Sex</span>
-                        <select id="sexSelector" ng-model="form.sex">
+                        <select id="sexSelector" class="form_input" ng-model="data.sex" disabled>
                             <option>Male</option>
                             <option>Female</option>
                         </select>
                     </label>
                     <label class="item item-input">
                         <span class="input-label">Height</span>
-                        <input type="text" class="modal_text" ng-model="form.height">
+                        <input type="text" class="form_input" ng-model="data.height" disabled>
                     </label>
                     <label class="item item-input">
                         <span class="input-label">Weight</span>
-                        <input type="text" class="modal_text" ng-model="form.weight">
+                        <input type="text" class="form_input" ng-model="data.weight" disabled>
                     </label>
-                    <div class="row">
+                    <div class="row form_buttons" hidden>
                         <div class="col">
-                            <button class="button button-block button-stable" ng-click='closeModal()'>
+                            <button class="button button-block button-stable" ng-click='cancelEdit()'>
                               Cancel
                            </button>
                         </div>
                         <div class="col">
-                            <button class="button button-block button-balanced" ng-click='updateProfile()'>
+                            <button class="button button-block button-balanced" ng-click='editProfile()'>
                               Save
                             </button>
                         </div>
                     </div>
-                </ion-content>
-            </div>
-        </script>
+
+				</ion-content>
+			</ion-view>
+		</script>
         
+    
 		<script id='run_program.html' type='text/ng-template'>
 			<ion-view title="Get Moving!!">
 				<ion-content class="content" ng-controller="TimerCtrl">

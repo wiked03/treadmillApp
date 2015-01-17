@@ -5,7 +5,7 @@ app.factory('dbFactory', ['$localForage', function($localForage) {
    
     var defaultProfile = {name: "Name",sex: "Male",height: 72,weight: 180};
     
-    var settings = {fbConnected: false,mfpConnected: false,units: "US"};
+    var defaultSettings = {fbConnected: false,mfpConnected: false,units: "US"};
     
     var workout = {
         id: 1,
@@ -59,7 +59,7 @@ app.factory('dbFactory', ['$localForage', function($localForage) {
         },
         initDB: function() {
             $localForage.setItem('profile', defaultProfile);
-            $localForage.setItem('settings', settings);
+            $localForage.setItem('settings', defaultSettings);
             $localForage.setItem('workouts', workouts);
             
         }

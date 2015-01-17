@@ -5,35 +5,33 @@ var app = angular.module('controllers', ['ionic', 'dbService', 'LocalForageModul
 
 app.controller('SettingsCtrl', ['$scope', 'dbFactory', '$ionicModal', function($scope, dbFactory, $ionicModal) {
     
-    $scope.fbConnected = false;
-    
-                                       
     $scope.data = {};
-                                     
-    $scope.loadSettings = function () {
-        $scope.data = dbFactory.getSettings();
-    };
-                                   
-    $ionicModal.fromTemplateUrl('settingsModal.html', {
-        scope: $scope,
-        animation: 'slide-in-up'
-    }).then(function(modal) {
-        $scope.modal = modal;
-    })  
-
-    $scope.openModal = function() {
-        $scope.modal.show();
-    }
-
-    $scope.closeModal = function() {
-        $scope.modal.hide();
-    };
-
-    $scope.$on('$destroy', function() {
-        $scope.modal.remove();
-    });
-                       
     
+    $scope.getSettings = function () {
+        dbFactory.getSettings(function(data) {
+            $scope.data = data;
+        });
+    
+    };
+                                     
+    $scope.enableEdit = function() {
+        $(".form_input").prop('disabled', false);
+        $(".form_buttons").show();
+    };
+    
+    $scope.cancelEdit = function() {
+        $(".form_input").prop('disabled', true); 
+        $(".form_buttons").hide();
+        dbFactory.getSettings(function(data) {
+            $scope.data = data;
+        });
+    };                
+
+    $scope.editSettings = function() {
+        dbFactory.setSettings($scope.data, function() {});
+        $(".form_input").prop('disabled', true); 
+        $(".form_buttons").hide();
+    }; 
     
     $scope.fbToggle = function () {
         if ($scope.fbConnected) {
@@ -43,9 +41,7 @@ app.controller('SettingsCtrl', ['$scope', 'dbFactory', '$ionicModal', function($
             $scope.fbLogin();
             $scope.fbConnected = true;
         }
-    
-    
-    }
+    };
     
     $scope.fbLogin = function() {
         alert('login function fired');
@@ -59,7 +55,7 @@ app.controller('SettingsCtrl', ['$scope', 'dbFactory', '$ionicModal', function($
                 }
             },
             {scope: 'email,publish_actions'});
-    }
+    };
     
     $scope.fbLogout = function() {
         alert('logout function fired');
@@ -67,7 +63,10 @@ app.controller('SettingsCtrl', ['$scope', 'dbFactory', '$ionicModal', function($
             function(response) {
                 alert("logged out");
             });
-    }
+    };
+    
+    $scope.getSettings();
+    $(".form_buttons").hide();
     
 }]);
 
@@ -76,42 +75,34 @@ app.controller('ProfileCtrl', ['$scope', 'dbFactory', '$ionicModal', '$localFora
                                function($scope, dbFactory, $ionicModal, $localForage) {
                                    
     $scope.data = {};
-    $scope.form = {};
                                        
     $scope.getProfile = function () {
-        
         dbFactory.getProfile(function(data) {
             $scope.data = data;
         });
     
     };
-                                   
-    $ionicModal.fromTemplateUrl('profileModal.html', {
-        scope: $scope,
-        animation: 'slide-in-up'
-    }).then(function(modal) {
-        $scope.modal = modal;
-    })  
-
-    $scope.openModal = function() {
-        $scope.form = $scope.data;
-        $scope.modal.show();
-    }
-
-    $scope.closeModal = function() {
-        $scope.modal.hide();
+    
+    $scope.enableEdit = function() {
+        $(".form_input").prop('disabled', false);
+        $(".form_buttons").show();
+        //document.getElementsByClassName('form_buttons').style.display = "block";
     };
-
-    $scope.$on('$destroy', function() {
-        $scope.modal.remove();
-    });
+    
+    $scope.cancelEdit = function() {
+        $(".form_input").prop('disabled', true); 
+        $(".form_buttons").hide();
+        dbFactory.getProfile(function(data) {
+            $scope.data = data;
+        });
+    }; 
                        
 
-    $scope.updateProfile = function() {
-        dbFactory.setProfile($scope.form, function() {});
-        $scope.data = $scope.form;
-        $scope.closeModal();   
-    }                                
+    $scope.editProfile = function() {
+        dbFactory.setProfile($scope.data, function() {});
+        $(".form_input").prop('disabled', true); 
+        $(".form_buttons").hide();
+    };                                
                                    
                                    
     $scope.getProfile();
