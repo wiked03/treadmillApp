@@ -54,6 +54,11 @@ app.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
         url: '/profile',
         templateUrl: 'profile.html'
     })
+    
+    .state('programDetails', {
+        url: '/programDetails/{id}',
+        templateUrl: 'programDetails.html'
+    })
 
     .state('run_program', {
         url: '/run_program/{id}',

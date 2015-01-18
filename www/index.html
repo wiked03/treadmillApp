@@ -60,7 +60,7 @@
 		</script>
 		
 		<script id='workout.html' type='text/ng-template'>
-			<ion-view title="Pick a Workout" align-title="center" ng-controller="WorkoutCtrl">
+			<ion-view title="Choose a Workout" align-title="center" ng-controller="WorkoutCtrl">
                 <ion-nav-bar class="bar-positive">
                     <ion-nav-buttons side="right">
 				        <button class="button button-icon icon ion-gear-b" ui-sref="settings"></button>
@@ -78,17 +78,39 @@
 		</script>
 		
 		<script id='programs.html' type='text/ng-template'>
-			<ion-view title="Choose a Program" align-title="center">
+			<ion-view title="Choose a Program" align-title="center" ng-controller="ProgramCtrl">
                 <ion-nav-bar class="bar-positive">
                     <ion-nav-buttons side="right">
 				        <button class="button button-icon icon ion-gear-b" ui-sref="settings"></button>
                     </ion-nav-buttons>
-                </ion_nav-bar> 
+                </ion_nav-bar>            
 				<ion-content class="content">
-                    <div id="programData">
-					  <!-- {{programs}} -->
-                    </div>
-				</ion-content>
+					<div class="list">
+                        <ul>
+                            <li ng-repeat="program in programs">
+                                <button class="button button-block button-light" ng-click="getProgramDetails({{program.id}})" >{{program.desc}}</button>
+                            </li>
+                        </ul>
+                </ion-content>
+			</ion-view>
+		</script>
+        
+        <script id='programDetails.html' type='text/ng-template'>
+			<ion-view title="Choose a Workout" align-title="center" ng-controller="ProgramDetailsCtrl">
+                <ion-nav-bar class="bar-positive">
+                    <ion-nav-buttons side="right">
+				        <button class="button button-icon icon ion-gear-b" ui-sref="settings"></button>
+                    </ion-nav-buttons>
+                </ion_nav-bar>            
+				<ion-content class="content">
+                    {{test}}
+					<div class="list">
+                        <ul>
+                            <li ng-repeat="workout in workouts">
+                                <button class="button button-block button-light" ng-click="runProgram({{workout.id}})" >{{workout.desc}}</button>
+                            </li>
+                        </ul>
+                </ion-content>
 			</ion-view>
 		</script>
         
@@ -209,13 +231,21 @@
 						<div class="col">Speed</div>
 						<div class="col">Incline</div>
 					</div>
-					<br>
 					<div class="row">
 						<div class="col">
                             <span>{{currSpeed}}</span>
                         </div>
 						<div class="col">
                             <span>{{currIncline}}</span>
+                        </div>
+					</div>
+                    <br>
+                    <div class="row">
+						<div class="col">
+                            <span>Distance: {{distance}} {{distanceUnits}}</span>
+                        </div>
+						<div class="col">
+                            <span>Carolires Burned: {{calories}}</span>
                         </div>
 					</div>
                     <div class="row timer_buttons">

@@ -67,6 +67,78 @@ app.factory('dbFactory', ['$localForage', function($localForage) {
         ]
     }];
     
+    var programs = [
+        {id: 0, desc: "10 Week, 6 Mile Trainer", workouts: 
+         [{id: 0,
+           desc: "Week 1, Day 1",
+           total_duration: 630,
+           intervals: [
+               {id: 1, duration: 180, speed: 4.0, incline: 0.0},
+               {id: 2, duration: 180, speed: 6.0, incline: 0.0},
+               {id: 3, duration: 60, speed: 7.0, incline: 0.0},
+               {id: 4, duration: 180, speed: 6.5, incline: 1.0},
+               {id: 5, duration: 30, speed: 8.0, incline: 1.0}   
+           ]
+         },
+         { id: 1,
+           desc: "Week 1, Day 2",
+           total_duration: 630,
+           intervals: [
+               {id: 1, duration: 180, speed: 4.0, incline: 0.0},
+               {id: 2, duration: 180, speed: 6.0, incline: 0.0},
+               {id: 3, duration: 60, speed: 7.0, incline: 0.0},
+               {id: 4, duration: 180, speed: 6.5, incline: 1.0},
+               {id: 5, duration: 30, speed: 8.0, incline: 1.0}
+           ]
+         },
+         { id: 1,
+           desc: "Week 1, Day 3",
+           total_duration: 630,
+           intervals: [
+               {id: 1, duration: 180, speed: 4.0, incline: 0.0},
+               {id: 2, duration: 180, speed: 6.0, incline: 0.0},
+               {id: 3, duration: 60, speed: 7.0, incline: 0.0},
+               {id: 4, duration: 180, speed: 6.5, incline: 1.0},
+               {id: 5, duration: 30, speed: 8.0, incline: 1.0}
+           ]
+         }]
+    }, {id: 1, desc: "5 Week, 3 Mile Trainer", workouts: 
+         [{id: 0,
+           desc: "Week 1, Day 1",
+           total_duration: 630,
+           intervals: [
+               {id: 1, duration: 180, speed: 4.0, incline: 0.0},
+               {id: 2, duration: 180, speed: 6.0, incline: 0.0},
+               {id: 3, duration: 60, speed: 7.0, incline: 0.0},
+               {id: 4, duration: 180, speed: 6.5, incline: 1.0},
+               {id: 5, duration: 30, speed: 8.0, incline: 1.0}   
+           ]
+         },
+         { id: 1,
+           desc: "Week 1, Day 2",
+           total_duration: 630,
+           intervals: [
+               {id: 1, duration: 180, speed: 4.0, incline: 0.0},
+               {id: 2, duration: 180, speed: 6.0, incline: 0.0},
+               {id: 3, duration: 60, speed: 7.0, incline: 0.0},
+               {id: 4, duration: 180, speed: 6.5, incline: 1.0},
+               {id: 5, duration: 30, speed: 8.0, incline: 1.0}
+           ]
+         },
+         { id: 1,
+           desc: "Week 1, Day 2",
+           total_duration: 630,
+           intervals: [
+               {id: 1, duration: 180, speed: 4.0, incline: 0.0},
+               {id: 2, duration: 180, speed: 6.0, incline: 0.0},
+               {id: 3, duration: 60, speed: 7.0, incline: 0.0},
+               {id: 4, duration: 180, speed: 6.5, incline: 1.0},
+               {id: 5, duration: 30, speed: 8.0, incline: 1.0}
+           ]
+         }]
+    }];
+    
+    
     return {
         getProfile: function(callback) {
             $localForage.getItem('profile').then(callback);
@@ -84,12 +156,15 @@ app.factory('dbFactory', ['$localForage', function($localForage) {
             $localForage.setItem('profile', defaultProfile);
             $localForage.setItem('settings', defaultSettings);
             $localForage.setItem('workouts', workouts);
-            
+            $localForage.setItem('programs', programs);            
         },
         getUnitOptions: function() { return unitOptions; },
         getSexOptions: function() { return sexOptions; },
         getWorkouts: function(callback) {
             $localForage.getItem('workouts').then(callback);
+        },
+        getPrograms: function(callback) {
+            $localForage.getItem('programs').then(callback);
         }
     };
     
