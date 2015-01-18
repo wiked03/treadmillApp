@@ -14,12 +14,9 @@ var app = angular.module('treadmillManager', ['ionic', 'controllers', 'services'
         
         dbFactory.getProfile(function(data) {
             if (!data) {
-                alert('yay not there');
                 dbFactory.initDB();
             }
         });
-        //dbFactory.initDB();
-
 	});
 });
 
@@ -59,7 +56,7 @@ app.config(function($stateProvider, $urlRouterProvider, $ionicConfigProvider) {
     })
 
     .state('run_program', {
-        url: '/run_program',
+        url: '/run_program/{id}',
         templateUrl: 'run_program.html'
     })
     

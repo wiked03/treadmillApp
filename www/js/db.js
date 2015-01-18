@@ -4,11 +4,13 @@ var app = angular.module('dbService', ['LocalForageModule'])
 app.factory('dbFactory', ['$localForage', function($localForage) {
    
     var defaultProfile = {name: "Name",sex: "Male",height: 72,weight: 180};
+    var unitOptions = ["Imperial", "Metric"];
+    var sexOptions = ["Male", "Female"];
     
-    var defaultSettings = {fbConnected: false,mfpConnected: false,units: "US"};
+    var defaultSettings = {fbConnected: false,mfpConnected: false,units: "Imperial"};
     
-    var workout = {
-        id: 1,
+    var workouts = [{
+        id: 0,
         desc: "45 Minute, 5 Mile",
         total_duration: 2700,
         intervals: [
@@ -39,10 +41,31 @@ app.factory('dbFactory', ['$localForage', function($localForage) {
             {id: 25, duration: 180, speed: 6.0, incline: 0.0},
             {id: 26, duration: 120, speed: 4.0, incline: 0.0}
         ]
-    };
-    
-    var workouts = [];
-    workouts.push(workout);
+    },
+    {
+        id: 1,
+        desc: "30 Minute",
+        total_duration: 1800,
+        intervals: [
+            {id: 1, duration: 180, speed: 4.0, incline: 0.0},
+            {id: 2, duration: 180, speed: 6.0, incline: 0.0},
+            {id: 3, duration: 60, speed: 7.0, incline: 0.0},
+            {id: 4, duration: 180, speed: 6.5, incline: 1.0},
+            {id: 5, duration: 30, speed: 8.0, incline: 1.0},
+            {id: 6, duration: 180, speed: 6.5, incline: 1.0},
+            {id: 7, duration: 30, speed: 8.0, incline: 1.0},
+            {id: 8, duration: 60, speed: 4.0, incline: 1.0},
+            {id: 9, duration: 30, speed: 8.0, incline: 2.0},
+            {id: 10, duration: 180, speed: 6.5, incline: 2.0},
+            {id: 11, duration: 30, speed: 8.0, incline: 2.0},
+            {id: 12, duration: 180, speed: 6.5, incline: 2.0},
+            {id: 13, duration: 30, speed: 9.0, incline: 2.0},
+            {id: 14, duration: 60, speed: 4.0, incline: 2.0},
+            {id: 15, duration: 180, speed: 6.0, incline: 3.0},
+            {id: 16, duration: 30, speed: 9.0, incline: 3.0},
+            {id: 17, duration: 180, speed: 6.0, incline: 3.0}
+        ]
+    }];
     
     return {
         getProfile: function(callback) {
@@ -62,6 +85,11 @@ app.factory('dbFactory', ['$localForage', function($localForage) {
             $localForage.setItem('settings', defaultSettings);
             $localForage.setItem('workouts', workouts);
             
+        },
+        getUnitOptions: function() { return unitOptions; },
+        getSexOptions: function() { return sexOptions; },
+        getWorkouts: function(callback) {
+            $localForage.getItem('workouts').then(callback);
         }
     };
     

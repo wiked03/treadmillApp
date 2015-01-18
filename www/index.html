@@ -39,7 +39,7 @@
 		<ion-nav-view></ion-nav-view>
 
 		<script id='main.html' type='text/ng-template'>
-			<ion-view title="Treadmill Manager">
+			<ion-view title="Treadmill Manager" align-title="center">
                 <ion-nav-bar class="bar-positive">
                     <ion-nav-buttons side="right">
 				        <button class="button button-icon icon ion-gear-b" ui-sref="settings"></button>
@@ -60,7 +60,7 @@
 		</script>
 		
 		<script id='workout.html' type='text/ng-template'>
-			<ion-view title="Workout Setup">
+			<ion-view title="Pick a Workout" align-title="center" ng-controller="WorkoutCtrl">
                 <ion-nav-bar class="bar-positive">
                     <ion-nav-buttons side="right">
 				        <button class="button button-icon icon ion-gear-b" ui-sref="settings"></button>
@@ -68,44 +68,22 @@
                 </ion_nav-bar>            
 				<ion-content class="content">
 					<div class="list">
-
-						<label class="item item-input item-select">
-							<div class="input-label">
-							  Workout Type
-							</div>
-							<select>
-								<option selected>Speed</option>
-								<option>Hill</option>
-								<option>Distance</option>
-								<option>Custom</option>
-							</select>
-						</label>
-                        
-                        <label class="item item-input item-select">
-							<div class="input-label">
-							  Some Setting
-							</div>
-							<select>
-								<option selected>option 1</option>
-								<option>option 2</option>
-								<option>option 3</option>
-							</select>
-						</label>
-					</div>
-					<button class="button button button-balanced" ui-sref="run_program">
-						Ready
-					</button>	
-				</ion-content>
+                        <ul>
+                            <li ng-repeat="workout in workouts">
+                                <button class="button button-block button-light" ng-click="runProgram({{workout.id}})" >{{workout.desc}}</button>
+                            </li>
+                        </ul>
+                </ion-content>
 			</ion-view>
 		</script>
 		
 		<script id='programs.html' type='text/ng-template'>
-			<ion-view title="Choose a Program">
+			<ion-view title="Choose a Program" align-title="center">
                 <ion-nav-bar class="bar-positive">
                     <ion-nav-buttons side="right">
 				        <button class="button button-icon icon ion-gear-b" ui-sref="settings"></button>
                     </ion-nav-buttons>
-                </ion_nav-bar>
+                </ion_nav-bar> 
 				<ion-content class="content">
                     <div id="programData">
 					  <!-- {{programs}} -->
@@ -115,7 +93,7 @@
 		</script>
         
         <script id='settings.html' type='text/ng-template'>
-			<ion-view title="Settings"  ng-controller="SettingsCtrl">
+			<ion-view title="Settings" align-title="center" ng-controller="SettingsCtrl">
                 <ion-nav-buttons side="right">
                     <button class="button button-icon icon ion-edit" ng-click="enableEdit()"></button>
                 </ion-nav-buttons>
@@ -125,25 +103,30 @@
 					</button>
                     <label class="item item-input item-select">
                         <span class="input-label">Unit of Measure</span>
-                        <select id="sexSelector" class="form_input" ng-model="data.unit" disabled>
-                            <option>US</option>
-                            <option>Metric</option>
+                        <select class="form_input" ng-model="data.units" ng-selected="option" ng-options="option for option in unitOptions" disabled>
+                            {{option}}
                         </select>
                     </label>
-                    <label class="item-toggle toggle toggle-positive">
-                        <span class="input-label">Connect to Facebook</span>
-                        <input type="checkbox" class="form_input" ng-click="fbToggle()" disabled>
-                           <div class="track">
-                             <div class="handle"></div>
-                           </div>
-                    </label>
-                    <label class="toggle toggle-positive">
-                        <span class="input-label">Connect to My Fitness Pal</span>
-                        <input type="checkbox" class="form_input" disabled>
-                           <div class="track">
-                             <div class="handle"></div>
-                           </div>
-                    </label>
+                    <ul class="list">
+                        <li class="item item-toggle">
+                            <span class="input-label">Connect to Facebook</span>
+                            <label class="toggle toggle-balanced">
+                                <input type="checkbox" ng-model="data.fbConnected" class="form_input" ng-change="fbToggle()" disabled>
+                                <div class="track">
+                                    <div class="handle"></div>
+                                </div>
+                            </label>
+                        </li>
+                        <li class="item item-toggle">
+                            <span class="input-label">Connect to My Fitness Pal</span>
+                            <label class="toggle toggle-balanced">
+                                <input type="checkbox" ng-model="data.mfpConnected" class="form_input" ng-change="mfpToggle()" disabled>
+                                <div class="track">
+                                    <div class="handle"></div>
+                                </div>
+                            </label>
+                        </li>
+                    </ul>
                     <div class="row form_buttons">
                         <div class="col">
                             <button class="button button-block button-stable" ng-click='cancelEdit()'>
@@ -162,7 +145,7 @@
         
     
         <script id='profile.html' type='text/ng-template'>
-			<ion-view title="Profile"  ng-controller="ProfileCtrl">
+			<ion-view title="Profile"  ng-controller="ProfileCtrl" align-title="center">
                 <ion-nav-buttons side="right">
                     <button class="button button-icon icon ion-edit" ng-click="enableEdit()"></button>
                 </ion-nav-buttons>    
@@ -173,9 +156,8 @@
                     </label>
                     <label class="item item-input item-select">
                         <span class="input-label">Sex</span>
-                        <select id="sexSelector" class="form_input" ng-model="data.sex" disabled>
-                            <option>Male</option>
-                            <option>Female</option>
+                        <select id="sexSelector" class="form_input" ng-model="data.sex" ng-options="option for option in sexOptions" disabled>
+                            {{option}}
                         </select>
                     </label>
                     <label class="item item-input">
@@ -205,28 +187,36 @@
         
     
 		<script id='run_program.html' type='text/ng-template'>
-			<ion-view title="Get Moving!!">
-				<ion-content class="content" ng-controller="TimerCtrl">
-                    <div id="elapsedTag">
-                        Elapsed
-                    </div>
-                    <div id="timerBox">
-                        <div id="timerValue">
-                            {{myTimer}}
+			<ion-view title="Get Moving!!" align-title="center">
+				<ion-content class="content" ng-controller="RunProgramCtrl">
+                    <div class="row">
+                        <div class="col">
+                            Elapsed
                         </div>
                     </div>
-                    <div id="timerRemaining">
-                        <p>Remaining: {{remainingTime}}</p> 
+                    <div class="row">
+                        <div class="col col-33 col-offset-33">
+                            <span>{{myTimer}}</span>
+                        </div>
+                    </div>
+                    <div class "row">
+                        <div class="col">
+                            <span>Remaining: {{remainingTime}}</span>
+                        </div>
                     </div>
 					<br>
 					<div class="row">
-						<div class="col run_labels">Speed</div>
-						<div class="col run_labels">Incline</div>
+						<div class="col">Speed</div>
+						<div class="col">Incline</div>
 					</div>
 					<br>
 					<div class="row">
-						<div class="col run_values"><span class="run_value_text">4.0</span></div>
-						<div class="col run_values"><span class="run_value_text">1</span></div>
+						<div class="col">
+                            <span>{{currSpeed}}</span>
+                        </div>
+						<div class="col">
+                            <span>{{currIncline}}</span>
+                        </div>
 					</div>
                     <div class="row timer_buttons">
                         <div class="col">
@@ -255,7 +245,7 @@
 		</script>
         
         <script id='summary.html' type='text/ng-template'>
-			<ion-view title="Workout Summary">
+			<ion-view title="Workout Summary" align-title="center">
                 <ion-nav-bar>
                     <ion-nav-buttons side="right">
 				        <button class="button button-icon icon ion-gear-b" ui-sref="settings"></button>

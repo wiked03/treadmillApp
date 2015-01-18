@@ -1,11 +1,30 @@
 
 var app = angular.module('controllers', ['ionic', 'dbService', 'LocalForageModule'])
 
+app.controller('WorkoutCtrl', ['$scope', 'dbFactory', '$state', function($scope, dbFactory, $state) {
+    
+    
+    $scope.runProgram = function(data) {
+        var param = {id: data};
+        $state.go('run_program',param);
+        
+    };
+        
+    $scope.getWorkouts = function () {
+        dbFactory.getWorkouts(function(data) {
+            $scope.workouts = data;
+        });
+    };
+    $scope.getWorkouts();
+    
+    
+}]);  // end of WorkoutCtrl
 
-
-app.controller('SettingsCtrl', ['$scope', 'dbFactory', '$ionicModal', function($scope, dbFactory, $ionicModal) {
+app.controller('SettingsCtrl', ['$scope', 'dbFactory', function($scope, dbFactory) {
     
     $scope.data = {};
+    
+    $scope.unitOptions = dbFactory.getUnitOptions();
     
     $scope.getSettings = function () {
         dbFactory.getSettings(function(data) {
@@ -43,6 +62,14 @@ app.controller('SettingsCtrl', ['$scope', 'dbFactory', '$ionicModal', function($
         }
     };
     
+    $scope.mfpToggle = function () {
+        if ($scope.mfpConnected) {
+            $scope.mfpConnected = false;
+        } else {
+            $scope.mfpConnected = true;
+        }
+    };
+    
     $scope.fbLogin = function() {
         alert('login function fired');
         openFB.login(
@@ -68,13 +95,14 @@ app.controller('SettingsCtrl', ['$scope', 'dbFactory', '$ionicModal', function($
     $scope.getSettings();
     $(".form_buttons").hide();
     
-}]);
+}]);  // end of SettingsCtrl
 
 
-app.controller('ProfileCtrl', ['$scope', 'dbFactory', '$ionicModal', '$localForage', 
-                               function($scope, dbFactory, $ionicModal, $localForage) {
+app.controller('ProfileCtrl', ['$scope', 'dbFactory', function($scope, dbFactory) {
                                    
     $scope.data = {};
+                                   
+    $scope.sexOptions = dbFactory.getSexOptions();
                                        
     $scope.getProfile = function () {
         dbFactory.getProfile(function(data) {
@@ -86,7 +114,6 @@ app.controller('ProfileCtrl', ['$scope', 'dbFactory', '$ionicModal', '$localFora
     $scope.enableEdit = function() {
         $(".form_input").prop('disabled', false);
         $(".form_buttons").show();
-        //document.getElementsByClassName('form_buttons').style.display = "block";
     };
     
     $scope.cancelEdit = function() {
@@ -106,8 +133,9 @@ app.controller('ProfileCtrl', ['$scope', 'dbFactory', '$ionicModal', '$localFora
                                    
                                    
     $scope.getProfile();
+    $(".form_buttons").hide();
 
-}]);
+}]);  // end of ProfileCtrl
 
 app.controller('SummaryCtrl', ['$scope', function($scope) {
     
@@ -128,16 +156,23 @@ app.controller('SummaryCtrl', ['$scope', function($scope) {
     }
     
     
-}]);
+}]);  // end of SummaryCtrl
 
-app.controller('TimerCtrl', ['$scope', '$interval', 'TimerService', function($scope, $interval, TimerService) {
+app.controller('RunProgramCtrl', ['$scope', '$interval', 'TimerService', '$stateParams', 'dbFactory', function($scope, $interval, TimerService, $stateParams, dbFactory) {
     var timer_id;
 
+    var index = $stateParams.id;
+    $scope.workout = {};
+    
     $scope.init = function () {
-        timer_id = 0;
-        $scope.myTimer = "0:00"
-        $scope.remainingTime = TimerService.init();
-    }
+        dbFactory.getWorkouts(function(data) {
+            $scope.workout = data[index];
+            timer_id = 0;
+            $scope.myTimer = "0:00"
+            $scope.remainingTime = TimerService.init($scope.workout.total_duration);
+        });
+
+    };
     $scope.init();
 
     $scope.startTimer = function() {
@@ -155,10 +190,14 @@ app.controller('TimerCtrl', ['$scope', '$interval', 'TimerService', function($sc
             timer_id = $interval(run_timer, 1000);
         }
 
-    }
+    };
 
     $scope.stopTimer = function() {
         $interval.cancel(timer_id);
         timer_id = 0;
-    }
-}]);
+    };
+    
+
+
+    
+}]);  // end of RunProgramCtrl

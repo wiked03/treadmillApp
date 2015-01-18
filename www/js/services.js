@@ -4,13 +4,12 @@ var app = angular.module('services', ['ionic', 'controllers', 'dbService'])
 
 app.service('TimerService', function () {
 
-    this.init = function() {
-        time = gTimer.split(":");
-        rem_minutes = parseInt(time[0]);
-        rem_seconds = parseInt(time[1]);
+    this.init = function(duration) {
+        rem_minutes = Math.floor(duration / 60);
+        rem_seconds = duration % 60;
         minutes = 0;
         seconds = 0;
-        return gTimer;
+        return (rem_minutes + ":" + ((rem_seconds < 10) ? "0" + rem_seconds : rem_seconds));
     }
 
     this.tickDown = function() {
