@@ -65,7 +65,33 @@ app.factory('dbFactory', ['$localForage', function($localForage) {
             {id: 16, duration: 30, speed: 9.0, incline: 3.0},
             {id: 17, duration: 180, speed: 6.0, incline: 3.0}
         ]
-    }];
+    },
+    {
+        id: 2,
+        desc: "Test Workout, 3 Minutes",
+        total_duration: 180,
+        intervals: [
+            {id: 1, duration: 10, speed: 4.0, incline: 0.0},
+            {id: 2, duration: 10, speed: 6.0, incline: 0.0},
+            {id: 3, duration: 10, speed: 7.0, incline: 0.0},
+            {id: 4, duration: 10, speed: 6.5, incline: 1.0},
+            {id: 5, duration: 10, speed: 8.0, incline: 1.0},
+            {id: 6, duration: 10, speed: 6.5, incline: 1.0},
+            {id: 7, duration: 10, speed: 8.0, incline: 1.0},
+            {id: 8, duration: 10, speed: 4.0, incline: 1.0},
+            {id: 9, duration: 10, speed: 8.0, incline: 2.0},
+            {id: 10, duration: 10, speed: 6.5, incline: 2.0},
+            {id: 11, duration: 10, speed: 8.0, incline: 2.0},
+            {id: 12, duration: 10, speed: 6.5, incline: 2.0},
+            {id: 13, duration: 10, speed: 9.0, incline: 2.0},
+            {id: 14, duration: 10, speed: 4.0, incline: 2.0},
+            {id: 15, duration: 10, speed: 6.0, incline: 3.0},
+            {id: 16, duration: 10, speed: 9.0, incline: 3.0},
+            {id: 17, duration: 10, speed: 6.0, incline: 3.0},
+            {id: 18, duration: 10, speed: 4.0, incline: 0.0}
+        ]
+    }
+    ];
     
     var programs = [
         {id: 0, desc: "10 Week, 6 Mile Trainer", workouts: 

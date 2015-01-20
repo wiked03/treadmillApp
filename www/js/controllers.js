@@ -202,19 +202,14 @@ app.controller('SummaryCtrl', ['$scope', function($scope) {
 
 app.controller('RunProgramCtrl', ['$scope', '$interval', 'TimerService', '$stateParams', 'dbFactory', function($scope, $interval, TimerService, $stateParams, dbFactory) {
     var timer_id;
+    var index = $stateParams.id;
     var curr = 0;
     var ticks = 0;
     var tot_speed = 0;
-    var weight = 0;
-    var units = "Imperial";
-    
-    $scope.distance = 0;
-    $scope.distanceUnit = 0;
-    $scope.currSpeed = 0.0;
-    $scope.currIncline = 0.0;
-    $scope.calories = 0;
+    var tot_cal = 0;
+    var distance = 0;
+    var metric = false;
 
-    var index = $stateParams.id;
     $scope.workout = {};
     
     $scope.init = function () {
@@ -223,40 +218,59 @@ app.controller('RunProgramCtrl', ['$scope', '$interval', 'TimerService', '$state
             timer_id = 0;
             $scope.myTimer = "0:00"
             $scope.remainingTime = TimerService.init($scope.workout.total_duration);
+            $scope.currSpeed = $scope.workout.intervals[curr].speed;
+            $scope.currIncline = $scope.workout.intervals[curr].incline;
         });
         
+        curr = 0;
+        ticks = 0;
+        tot_speed = 0;
+        tot_cal = 0;
+        distance = 0;
+        metric = false;
+        $scope.distance = 0;
+        $scope.distanceUnit = 0;
+        $scope.currSpeed = 0.0;
+        $scope.currIncline = 0.0;
+        $scope.calories = 0;
+        
+        
         dbFactory.getProfile(function(data) {
-            weight = data.weight;
+            $scope.weight = data.weight;
         });
         
         dbFactory.getSettings(function(data) {
-            units = data.units;
+            if (data.units == "Imperial") {
+                $scope.distanceUnit = "mi";
+                metric = false;
+            } else {
+                $scope.distanceUnit = "km";
+                metric = true;
+            }
         });
-        
-        if (units == "Imperial") {
-            $scope.distanceUnit = "mi";
-        } else {
-            $scope.distanceUnit = "km";
-        }
 
     };
     $scope.init();
+
 
     $scope.startTimer = function() {
 
         run_timer = function() {
             $scope.myTimer = TimerService.tickUp();
             $scope.remainingTime = TimerService.tickDown();
-            $scope.currSpeed = $scope.workout.intervals[curr].speed;
-            $scope.currIncline = $scope.workout.intervals[curr].incline;
-            if (ticks >= $scope.workout.intervals[curr].time) {
+            ticks++;
+            if (ticks >= $scope.workout.intervals[curr].duration) {
+                ticks = 0;
 				$scope.run_interval(curr);
 				curr++;
+                $scope.currSpeed = $scope.workout.intervals[curr].speed;
+                $scope.currIncline = $scope.workout.intervals[curr].incline;
 				ticks = 0;
 			}
             
             if ($scope.remainingTime == "0:00") {
                 //done
+                $(".finish_button").show();
                 $interval.cancel(timer_id);
                 timer_id = 0;
             }
@@ -273,14 +287,14 @@ app.controller('RunProgramCtrl', ['$scope', '$interval', 'TimerService', '$state
     };
     
 
-    calcInterval = function(time, speed, incline, weight) {
+    $scope.calcInterval = function(time, speed, incline, weight) {
         var ox = 0;
         var cal_per_sec = 0;
         var i = incline / 100;  // convert to decimal form
         var s = 0;
         var w = 0;
 
-        if (units == "Imperial") {
+        if (!metric) {
             // convert incoming metric
             s = speed * 26.8;   // meters per second
             w = weight / 2.2;   // kg
@@ -296,23 +310,29 @@ app.controller('RunProgramCtrl', ['$scope', '$interval', 'TimerService', '$state
 
         return (cal_per_sec * time);
 
-    }
+    };
 
 
     $scope.run_interval = function (i) {
 
         tot_speed = tot_speed + $scope.workout.intervals[i].speed;
 
-        var distance = distance + (($scope.workout.intervals[i].speed/3600) * $scope.workout.intervals[i].duration);
-        $scope.distance = Math.round(distance * 100) / 100;
+        distance = distance + (($scope.workout.intervals[i].speed/3600) * $scope.workout.intervals[i].duration);
+        if (metric) {
+            $scope.distance = Math.round(distance * 100) / 100;
+        } else {
+            $scope.distance = Math.round((distance*1.609) * 100) / 100;
+        }
         
         var avg_speed = tot_speed / (i+1);
         $scope.avgSpeed = Math.round(avg_speed * 100) / 100;
 
-        tot_cal = tot_cal + calcInterval($scope.workout.intervals[i].duration, $scope.workout.intervals[i].speed, $scope.workout.intervals[i].incline, weight);
+        tot_cal = tot_cal + $scope.calcInterval($scope.workout.intervals[i].duration, $scope.workout.intervals[i].speed, $scope.workout.intervals[i].incline, $scope.weight);
         $scope.calories = Math.round(tot_cal * 100) / 100;
 
-    }
+    };
+    
+    $(".finish_button").hide();
 
     
 

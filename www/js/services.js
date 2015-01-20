@@ -5,45 +5,28 @@ var app = angular.module('services', ['ionic', 'controllers', 'dbService'])
 app.service('TimerService', function () {
 
     this.init = function(duration) {
-        rem_minutes = Math.floor(duration / 60);
-        rem_seconds = duration % 60;
-        minutes = 0;
-        seconds = 0;
-        return (rem_minutes + ":" + ((rem_seconds < 10) ? "0" + rem_seconds : rem_seconds));
+        remaining = duration;
+        start = 0;
+        return this.formatTime(remaining);
     }
 
     this.tickDown = function() {
-        if(rem_seconds == 0) {
-            rem_minutes--;
-            rem_seconds = 59;
-        } else {
-            rem_seconds--;
+        if(remaining > 0) {
+            remaining--;
         }
-        return this.updateDownValue();
+        return this.formatTime(remaining);
     }
     
     this.tickUp = function() {
-        if(seconds == 59) {
-            seconds = 0;
-            minutes++;
-        } else {
-            seconds++;
-        }
-        return this.updateUpValue();
+        start++;
+        return this.formatTime(start);
     }
 
-    this.updateDownValue = function() {
-        if (rem_seconds < 10) {
-            rem_seconds = "0" + rem_seconds;
-        }
-        return (rem_minutes + ":" + rem_seconds);
-    }
     
-    this.updateUpValue = function() {
-        if (seconds < 10) {
-            seconds = "0" + seconds;
-        }
-        return (minutes + ":" + seconds);
+    this.formatTime = function(time) {
+        var min = Math.floor(time / 60);
+        var sec = time % 60;
+        return (min + ":" + ((sec < 10) ? "0" + sec : sec));
     }
 
 });

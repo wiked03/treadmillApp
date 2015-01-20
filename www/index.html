@@ -40,11 +40,9 @@
 
 		<script id='main.html' type='text/ng-template'>
 			<ion-view title="Treadmill Manager" align-title="center">
-                <ion-nav-bar class="bar-positive">
-                    <ion-nav-buttons side="right">
-				        <button class="button button-icon icon ion-gear-b" ui-sref="settings"></button>
-                    </ion-nav-buttons>
-                </ion_nav-bar>
+                <ion-nav-buttons side="right">
+				    <button class="button button-icon icon ion-gear-b" ui-sref="settings"></button>
+                </ion-nav-buttons>   
 				<ion-content class="content">
 					<button class="button button-block button-light" ui-sref="workout">
 						Single Workout
@@ -61,11 +59,9 @@
 		
 		<script id='workout.html' type='text/ng-template'>
 			<ion-view title="Choose a Workout" align-title="center" ng-controller="WorkoutCtrl">
-                <ion-nav-bar class="bar-positive">
-                    <ion-nav-buttons side="right">
-				        <button class="button button-icon icon ion-gear-b" ui-sref="settings"></button>
-                    </ion-nav-buttons>
-                </ion_nav-bar>            
+                <ion-nav-buttons side="right">
+				    <button class="button button-icon icon ion-gear-b" ui-sref="settings"></button>
+                </ion-nav-buttons>            
 				<ion-content class="content">
 					<div class="list">
                         <ul>
@@ -79,11 +75,9 @@
 		
 		<script id='programs.html' type='text/ng-template'>
 			<ion-view title="Choose a Program" align-title="center" ng-controller="ProgramCtrl">
-                <ion-nav-bar class="bar-positive">
-                    <ion-nav-buttons side="right">
-				        <button class="button button-icon icon ion-gear-b" ui-sref="settings"></button>
-                    </ion-nav-buttons>
-                </ion_nav-bar>            
+                <ion-nav-buttons side="right">
+				    <button class="button button-icon icon ion-gear-b" ui-sref="settings"></button>
+                </ion-nav-buttons>         
 				<ion-content class="content">
 					<div class="list">
                         <ul>
@@ -97,11 +91,9 @@
         
         <script id='programDetails.html' type='text/ng-template'>
 			<ion-view title="Choose a Workout" align-title="center" ng-controller="ProgramDetailsCtrl">
-                <ion-nav-bar class="bar-positive">
-                    <ion-nav-buttons side="right">
-				        <button class="button button-icon icon ion-gear-b" ui-sref="settings"></button>
-                    </ion-nav-buttons>
-                </ion_nav-bar>            
+                <ion-nav-buttons side="right">
+				    <button class="button button-icon icon ion-gear-b" ui-sref="settings"></button>
+                </ion-nav-buttons>       
 				<ion-content class="content">
                     {{test}}
 					<div class="list">
@@ -242,10 +234,10 @@
                     <br>
                     <div class="row">
 						<div class="col">
-                            <span>Distance: {{distance}} {{distanceUnits}}</span>
+                            <span>Distance: {{distance}} {{distanceUnit}}</span>
                         </div>
 						<div class="col">
-                            <span>Carolires Burned: {{calories}}</span>
+                            <span>Carolires Burned: {{calories}} kcal</span>
                         </div>
 					</div>
                     <div class="row timer_buttons">
@@ -262,25 +254,20 @@
                     </div>
                     <div class="row">
                         <div class="col">
-                            <button class="button button-block button-positive" ui-sref="summary">
-						      Summary
+                            <button class="button button-block button-positive finish_button" ui-sref="summary">
+						      Finished
 					        </button>
                         </div>
                     </div>
-	
-
-                    
 				</ion-content>
 			</ion-view>
 		</script>
         
         <script id='summary.html' type='text/ng-template'>
 			<ion-view title="Workout Summary" align-title="center">
-                <ion-nav-bar>
-                    <ion-nav-buttons side="right">
-				        <button class="button button-icon icon ion-gear-b" ui-sref="settings"></button>
-                    </ion-nav-buttons>
-                </ion_nav-bar>
+                <ion-nav-buttons side="right">
+				    <button class="button button-icon icon ion-gear-b" ui-sref="settings"></button>
+                </ion-nav-buttons>   
 				<ion-content class="content" ng-controller="SummaryCtrl">
                     Blah blah blah workout stats...
                 
